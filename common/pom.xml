@@ -9,8 +9,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-<!--    <groupId>org.example</groupId>-->
-    <artifactId>member</artifactId>
+    <artifactId>common</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -19,11 +18,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>com.zzpig</groupId>
-            <artifactId>common</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -39,18 +33,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
         </dependency>
@@ -60,14 +42,5 @@
             <artifactId>hutool-all</artifactId>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>
