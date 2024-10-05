@@ -25,6 +25,7 @@
         <module>member</module>
         <module>common</module>
         <module>gateway</module>
+        <module>generator</module>
     </modules>
     <scm>
         <connection/>
@@ -64,6 +65,22 @@
                 <artifactId>common</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
+
+            <!-- 集成mybatis -->
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>3.0.2</version>
+            </dependency>
+
+            <!-- 集成mysql -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>8.0.29</version>
+            </dependency>
+
+
         </dependencies>
     </dependencyManagement>
 
