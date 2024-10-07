@@ -1,6 +1,8 @@
 package com.zzpig.train.member.service;
 
 import cn.hutool.core.collection.CollUtil;
+import com.zzpig.train.common.exception.BusinessException;
+import com.zzpig.train.common.exception.BusinessExceptionEnum;
 import com.zzpig.train.member.domain.Member;
 import com.zzpig.train.member.domain.MemberExample;
 import com.zzpig.train.member.mapper.MemberMapper;
@@ -27,11 +29,12 @@ public class MemberService {
         memberExample.createCriteria().andMobileEqualTo(mobile);
         List<Member> list = memberMapper.selectByExample(memberExample);
         if(CollUtil.isNotEmpty(list)){
-            throw new RuntimeException("手机号已经被注册");
+            throw new BusinessException(BusinessExceptionEnum.MEMBER_MOBILE_EXIST);
         }
 
         Member member = new Member();
         member.setId(System.currentTimeMillis());
+//        member.setId(1728304023362L);
         member.setMobile(mobile);
 
         memberMapper.insert(member);
