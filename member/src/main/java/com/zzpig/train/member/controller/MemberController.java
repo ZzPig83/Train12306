@@ -1,5 +1,7 @@
 package com.zzpig.train.member.controller;
 
+import com.zzpig.train.common.resp.CommonResp;
+import com.zzpig.train.member.req.MemberRegisterReq;
 import com.zzpig.train.member.service.MemberService;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +15,21 @@ public class MemberController {
     MemberService memberService;
 
     @GetMapping("/count")
-    public int count(){
+    public CommonResp<Integer> count(){
         // 每个人都是这样，享受过提心吊胆，才拒绝做爱情待罪的羔羊。
-        return memberService.count();
+        int count = memberService.count();
+        CommonResp<Integer> commonResp = new CommonResp<>();
+        commonResp.setContent(count);
+        return commonResp;
     }
 
     @PostMapping("/register")
-    public long register(String mobile){
-        return memberService.register(mobile);
+    public CommonResp<Long> register(MemberRegisterReq req){
+        long register = memberService.register(req);
+//        CommonResp<Long> commonResp = new CommonResp<>();
+//        commonResp.setContent(register);
+//        return commonResp;
+        return new CommonResp<>(register);
     }
 
 }
