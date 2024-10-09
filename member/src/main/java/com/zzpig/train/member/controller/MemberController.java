@@ -4,6 +4,7 @@ import com.zzpig.train.common.resp.CommonResp;
 import com.zzpig.train.member.req.MemberRegisterReq;
 import com.zzpig.train.member.service.MemberService;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ public class MemberController {
     }
 
     @PostMapping("/register")
-    public CommonResp<Long> register(MemberRegisterReq req){
+    public CommonResp<Long> register(@Valid MemberRegisterReq req){
         long register = memberService.register(req);
 //        CommonResp<Long> commonResp = new CommonResp<>();
 //        commonResp.setContent(register);
