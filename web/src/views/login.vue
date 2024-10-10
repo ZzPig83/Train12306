@@ -1,7 +1,8 @@
 <template>
   <a-row class="login">
     <a-col :span="8" offset="8" class="login-main">
-      <h1 class="centered-title">小卒科技-仿12306购票平台</h1>
+
+      <h1 class="centered-title">小卒科技<line-outlined/>仿12306购票平台</h1>
       <a-form
           :model="loginForm"
           name="basic"
