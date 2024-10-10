@@ -30,7 +30,7 @@
         </a-form-item>
 
         <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-          <a-button type="primary" html-type="submit">登陆</a-button>
+          <a-button type="primary" html-type="submit" @click="login">登陆</a-button>
         </a-form-item>
       </a-form>
     </a-col>
@@ -40,6 +40,7 @@
 <script>
 import { defineComponent, reactive } from 'vue';
 import axios from 'axios';
+import {notification} from "ant-design-vue";
 
 export default defineComponent({
   setup() {
@@ -57,14 +58,36 @@ export default defineComponent({
       axios.post("http://localhost:8000/member/member/send-code", {
         mobile: loginForm.mobile
       }).then(response => {
-        console.log(response)
+        console.log(response);
+        let data = response.data;
+        if(data.success){
+          notification.success({description:"发送验证码成功"});
+          loginForm.code = "8888"
+        }else{
+          notification.error({description:data.message});
+        }
+      });
+    };
+    const login = () => {
+      axios.post("http://localhost:8000/member/member/login", {
+        mobile: loginForm.mobile,
+        code: loginForm.code
+      }).then(response => {
+        console.log(response);
+        let data = response.data;
+        if(data.success){
+          notification.success({description:"登陆成功"});
+        }else{
+          notification.error({description:data.message});
+        }
       });
     };
     return {
       loginForm,
       onFinish,
       onFinishFailed,
-      sendCode
+      sendCode,
+      login
     };
   },
 });
