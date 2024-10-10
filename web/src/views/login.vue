@@ -11,10 +11,10 @@
       >
         <a-form-item
             label="手机号"
-            name="username"
-            :rules="[{ required: true, message: 'Please input your username!' }]"
+            name="mobile"
+            :rules="[{ required: true, message: '请输入手机号' }]"
         >
-          <a-input v-model:value="loginForm.username" />
+          <a-input v-model:value="loginForm.mobile" />
         </a-form-item>
 
         <a-form-item
@@ -39,10 +39,12 @@
 
 <script>
 import { defineComponent, reactive } from 'vue';
+import axios from 'axios';
+
 export default defineComponent({
   setup() {
     const loginForm = reactive({
-      username: '',
+      mobile: '',
       code: '',
     });
     const onFinish = values => {
@@ -51,10 +53,18 @@ export default defineComponent({
     const onFinishFailed = errorInfo => {
       console.log('Failed:', errorInfo);
     };
+    const sendCode = () => {
+      axios.post("http://localhost:8000/member/member/send-code", {
+        mobile: loginForm.mobile
+      }).then(response => {
+        console.log(response)
+      });
+    };
     return {
       loginForm,
       onFinish,
       onFinishFailed,
+      sendCode
     };
   },
 });
