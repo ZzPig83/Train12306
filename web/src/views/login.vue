@@ -56,7 +56,7 @@ export default defineComponent({
       console.log('Failed:', errorInfo);
     };
     const sendCode = () => {
-      axios.post("http://localhost:8000/member/member/send-code", {
+      axios.post("/member/member/send-code", {
         mobile: loginForm.mobile
       }).then(response => {
         console.log(response);
@@ -70,7 +70,7 @@ export default defineComponent({
       });
     };
     const login = () => {
-      axios.post("http://localhost:8000/member/member/login", {
+      axios.post("/member/member/login", {
         mobile: loginForm.mobile,
         code: loginForm.code
       }).then(response => {
