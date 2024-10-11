@@ -42,9 +42,11 @@
 import { defineComponent, reactive } from 'vue';
 import axios from 'axios';
 import {notification} from "ant-design-vue";
+import {useRouter} from 'vue-router'
 
 export default defineComponent({
   setup() {
+    const route = useRouter();
     const loginForm = reactive({
       mobile: '',
       code: '',
@@ -78,6 +80,8 @@ export default defineComponent({
         let data = response.data;
         if(data.success){
           notification.success({description:"登陆成功"});
+          // 登陆成功，跳转到主页
+          route.push('/mainView')
         }else{
           notification.error({description:data.message});
         }
