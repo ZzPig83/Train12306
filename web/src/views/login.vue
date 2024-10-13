@@ -43,6 +43,7 @@ import { defineComponent, reactive } from 'vue';
 import axios from 'axios';
 import {notification} from "ant-design-vue";
 import {useRouter} from 'vue-router'
+import store from "@/store";
 
 export default defineComponent({
   setup() {
@@ -82,6 +83,7 @@ export default defineComponent({
           notification.success({description:"登陆成功"});
           // 登陆成功，跳转到主页
           route.push('/mainView')
+          store.commit("setMember", data.content);
         }else{
           notification.error({description:data.message});
         }
