@@ -7,6 +7,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.zzpig.train.common.exception.BusinessException;
 import com.zzpig.train.common.exception.BusinessExceptionEnum;
+import com.zzpig.train.common.util.JwtUtil;
 import com.zzpig.train.common.util.SnowUtil;
 import com.zzpig.train.member.domain.Member;
 import com.zzpig.train.member.domain.MemberExample;
@@ -85,6 +86,8 @@ public class MemberService {
             throw new BusinessException(BusinessExceptionEnum.MEMBER_MOBILE_CODE_WRONG);
         }
         MemberLoginResp memberLoginResp = BeanUtil.copyProperties(memberDB, MemberLoginResp.class);
+        String token = JwtUtil.createToken(memberLoginResp.getId(), memberLoginResp.getMobile());
+        memberLoginResp.setToken(token);
         return memberLoginResp;
     }
 
