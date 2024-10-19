@@ -5,17 +5,28 @@ import {notification} from "ant-design-vue";
 const routes = [
 
   {
-    path: '/',
+    path: '/login',
     name: 'login',
     component: () => import('../views/login.vue')
   },
   {
-    path: '/mainView',
+    path: '/',
     name: 'mainView',
     component: () => import('../views/mainView.vue'),
     meta:{
       loginRequire: true
-    }
+    },
+    children: [{
+      path: 'welcome',
+      component: () =>import('../views/main/welcome.vue')
+    },{
+      path: 'passenger',
+      component: () =>import('../views/main/passenger.vue')
+    }]
+  },
+  {
+    path: '',
+    redirect: '/welcome'
   }
 ]
 
