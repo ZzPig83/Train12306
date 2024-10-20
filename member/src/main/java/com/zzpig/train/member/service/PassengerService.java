@@ -3,6 +3,7 @@ package com.zzpig.train.member.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
+import com.zzpig.train.common.context.LoginMemberContext;
 import com.zzpig.train.common.exception.BusinessException;
 import com.zzpig.train.common.exception.BusinessExceptionEnum;
 import com.zzpig.train.common.util.SnowUtil;
@@ -25,6 +26,8 @@ public class PassengerService {
     public void save(PassengerSaveReq req){
         DateTime now = DateTime.now();
         Passenger passenger = BeanUtil.copyProperties(req, Passenger.class);
+        passenger.setMemberId(LoginMemberContext.getId());
+        LOG.info("会员memberId是{}",LoginMemberContext.getId());
         passenger.setId(SnowUtil.getSnowflakeNextId());
         passenger.setCreateTime(now);
         passenger.setUpdateTime(now);

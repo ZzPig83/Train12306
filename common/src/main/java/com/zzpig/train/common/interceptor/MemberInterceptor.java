@@ -31,6 +31,7 @@ public class MemberInterceptor implements HandlerInterceptor {
             LOG.info("当前登录会员：{}", loginMember);
             MemberLoginResp member = JSONUtil.toBean(loginMember, MemberLoginResp.class);
             LoginMemberContext.setMember(member);
+            LOG.info("电话是：{}",LoginMemberContext.getMember().getMobile());
         } else{
             LOG.info("未获取到token");
         }
