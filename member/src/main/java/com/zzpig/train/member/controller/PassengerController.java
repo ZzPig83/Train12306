@@ -2,6 +2,7 @@ package com.zzpig.train.member.controller;
 
 import com.zzpig.train.common.context.LoginMemberContext;
 import com.zzpig.train.common.resp.CommonResp;
+import com.zzpig.train.common.resp.PageResp;
 import com.zzpig.train.member.req.MemberRegisterReq;
 import com.zzpig.train.member.req.PassengerQueryReq;
 import com.zzpig.train.member.req.PassengerSaveReq;
@@ -27,9 +28,9 @@ public class PassengerController {
     }
 
     @GetMapping("/query-list")
-    public CommonResp<List<PassengerQueryResp>> queryList(PassengerQueryReq req){
+    public CommonResp<PageResp<PassengerQueryResp>> queryList(@Valid PassengerQueryReq req){
         req.setMemberId(LoginMemberContext.getId());
-        List<PassengerQueryResp> list = passengerService.queryList(req);
+        PageResp<PassengerQueryResp> list = passengerService.queryList(req);
         return new CommonResp<>(list);
     }
 }

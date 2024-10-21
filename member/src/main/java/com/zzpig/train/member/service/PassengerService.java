@@ -3,10 +3,13 @@ package com.zzpig.train.member.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.zzpig.train.common.context.LoginMemberContext;
 import com.zzpig.train.common.exception.BusinessException;
 import com.zzpig.train.common.exception.BusinessExceptionEnum;
+import com.zzpig.train.common.resp.PageResp;
 import com.zzpig.train.common.util.SnowUtil;
 import com.zzpig.train.member.domain.Member;
 import com.zzpig.train.member.domain.Passenger;
@@ -40,14 +43,24 @@ public class PassengerService {
         passengerMapper.insert(passenger);
     }
 
-    public List<PassengerQueryResp> queryList(PassengerQueryReq req){
+    public PageResp<PassengerQueryResp> queryList(PassengerQueryReq req){
         PassengerExample passengerExample = new PassengerExample();
         PassengerExample.Criteria criteria = passengerExample.createCriteria();
         if(ObjectUtil.isNotNull(req.getMemberId())){
             criteria.andMemberIdEqualTo(req.getMemberId());
         }
-        PageHelper.startPage(1,2);
+        PageHelper.startPage(req.getPage(), req.getSize());
         List<Passenger> passengerList = passengerMapper.selectByExample(passengerExample);
-        return BeanUtil.copyToList(passengerList, PassengerQueryResp.class);
+
+        PageInfo<Passenger> pageInfo= new PageInfo<>(passengerList);
+        LOG.info("总行数：{}",pageInfo.getTotal());
+        LOG.info("总页数：{}",pageInfo.getPages());
+
+        List<PassengerQueryResp> list = BeanUtil.copyToList(passengerList, PassengerQueryResp.class);
+        PageResp<PassengerQueryResp> pageResp = new PageResp<>();
+        pageResp.setTotal(pageInfo.getTotal());
+        pageResp.setList(list);
+
+        return pageResp;
     }
 }
