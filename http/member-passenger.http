@@ -2,3 +2,27 @@ GET http://localhost:8000/member/passenger/query-list?page=2&size=2
 Accept: application/json
 Content-Type: application/json
 token: {{token}}
+
+###
+POST http://localhost:8000/member/passenger/save
+Content-Type: application/json
+token: {{token}}
+
+{
+  "name": "孙小小",
+  "idCard": "88886666",
+  "type": "2"
+}
+
+###
+POST http://localhost:8000/member/passenger/save
+Content-Type: application/json
+token: {{token}}
+
+{
+  "id": 1848596281820319744,
+  "memberId": 1844301269372637184,
+  "name": "孙悟空",
+  "idCard": "88886666",
+  "type": "2"
+}
