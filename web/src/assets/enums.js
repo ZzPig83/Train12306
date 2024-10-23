@@ -1,0 +1,1 @@
+PASSENGER_TYPE_ARRAY = [{key: "1", value: "成人"}, {key: "2", value: "child"}, {key:"3", value:"student"}];
