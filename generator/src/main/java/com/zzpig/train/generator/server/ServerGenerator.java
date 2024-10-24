@@ -1,12 +1,15 @@
 package com.zzpig.train.generator.server;
 
 import com.zzpig.train.generator.util.FreemarkerUtil;
+import freemarker.template.TemplateException;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
 
 import java.io.File;
+import java.io.IOException;
+import java.lang.annotation.Target;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,11 +19,11 @@ public class ServerGenerator {
 //    static boolean readOnly = true;
 //    static String vuePath = "admin/src/views/main/";
 //    static String serverPath = "[module]/src/main/java/com/jiawa/train/[module]/";
-    static String servicePath = "[module]/src/main/java/com/zzpig/train/[module]/service/";
+    static String serverPath = "[module]/src/main/java/com/zzpig/train/[module]/";
     static String pomPath = "generator/pom.xml";
 //    static String module = "";
     static {
-        new File(servicePath).mkdirs();
+        new File(serverPath).mkdirs();
     }
 
     public static void main(String[] args) throws Exception {
@@ -29,9 +32,9 @@ public class ServerGenerator {
         // 比如generator-config-member.xml，得到module = member
         String module = generatorPath.replace("src/main/resources/generator-config-", "").replace(".xml", "");
         System.out.println("module: " + module);
-        servicePath = servicePath.replace("[module]", module);
-        // new File(servicePath).mkdirs();
-        System.out.println("servicePath: " + servicePath);
+        serverPath = serverPath.replace("[module]", module);
+        // new File(serverPath).mkdirs();
+        System.out.println("serverPath: " + serverPath);
 
         Document document = new SAXReader().read("generator/" + generatorPath);
         Node table = document.selectSingleNode("//table");
@@ -64,8 +67,18 @@ public class ServerGenerator {
 //        param.put("readOnly", readOnly);
         System.out.println("组装参数：" + param);
 
-        FreemarkerUtil.initConfig("service.ftl");
-        FreemarkerUtil.generator(servicePath + Domain + "Service.java", param);
+        generate(Domain, param,"service");
+        generate(Domain, param, "controller");
+    }
+
+    private static void generate(String Domain, Map<String, Object> param, String target) throws IOException, TemplateException {
+        FreemarkerUtil.initConfig(target + ".ftl");
+        String toPath = serverPath + target + "/";
+        new File(toPath).mkdirs();
+        String Target = target.substring(0,1).toUpperCase() + target.substring(1);
+        String fileName = toPath + Domain + Target + ".java";
+        System.out.println("开始生成：" + fileName);
+        FreemarkerUtil.generator(fileName, param);
     }
 
     private static String getGeneratorPath() throws DocumentException {
