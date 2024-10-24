@@ -1,5 +1,7 @@
 package com.zzpig.train.generator.server;
 
+import com.zzpig.train.generator.util.DbUtil;
+import com.zzpig.train.generator.util.Field;
 import com.zzpig.train.generator.util.FreemarkerUtil;
 import freemarker.template.TemplateException;
 import org.dom4j.Document;
@@ -11,12 +13,10 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Target;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ServerGenerator {
-//    static boolean readOnly = true;
+    static boolean readOnly = true;
 //    static String vuePath = "admin/src/views/main/";
 //    static String serverPath = "[module]/src/main/java/com/jiawa/train/[module]/";
     static String serverPath = "[module]/src/main/java/com/zzpig/train/[module]/";
@@ -36,12 +36,24 @@ public class ServerGenerator {
         // new File(serverPath).mkdirs();
         System.out.println("serverPath: " + serverPath);
 
+        // 读取table节点
         Document document = new SAXReader().read("generator/" + generatorPath);
         Node table = document.selectSingleNode("//table");
         System.out.println(table);
         Node tableName = table.selectSingleNode("@tableName");
         Node domainObjectName = table.selectSingleNode("@domainObjectName");
         System.out.println(tableName.getText() + "/" + domainObjectName.getText());
+
+        // 为DbUtil设置数据源
+        Node connectionURL = document.selectSingleNode("//@connectionURL");
+        Node userId = document.selectSingleNode("//@userId");
+        Node password = document.selectSingleNode("//@password");
+        System.out.println("url: " + connectionURL.getText());
+        System.out.println("user: " + userId.getText());
+        System.out.println("password: " + password.getText());
+        DbUtil.url = connectionURL.getText();
+        DbUtil.user = userId.getText();
+        DbUtil.password = password.getText();
 
         // 示例：表名 jiawa_test
         // Domain = JiawaTest
@@ -51,9 +63,9 @@ public class ServerGenerator {
         // do_main = jiawa-test
         String do_main = tableName.getText().replaceAll("_", "-");
 //        // 表中文名
-//        String tableNameCn = DbUtil.getTableComment(tableName.getText());
-//        List<Field> fieldList = DbUtil.getColumnByTableName(tableName.getText());
-//        Set<String> typeSet = getJavaTypes(fieldList);
+        String tableNameCn = DbUtil.getTableComment(tableName.getText());
+        List<Field> fieldList = DbUtil.getColumnByTableName(tableName.getText());
+        Set<String> typeSet = getJavaTypes(fieldList);
 
         // 组装参数
         Map<String, Object> param = new HashMap<>();
@@ -61,10 +73,10 @@ public class ServerGenerator {
         param.put("Domain", Domain);
         param.put("domain", domain);
         param.put("do_main", do_main);
-//        param.put("tableNameCn", tableNameCn);
-//        param.put("fieldList", fieldList);
-//        param.put("typeSet", typeSet);
-//        param.put("readOnly", readOnly);
+        param.put("tableNameCn", tableNameCn);
+        param.put("fieldList", fieldList);
+        param.put("typeSet", typeSet);
+        param.put("readOnly", readOnly);
         System.out.println("组装参数：" + param);
 
         generate(Domain, param,"service");
@@ -90,5 +102,17 @@ public class ServerGenerator {
         Node node = document.selectSingleNode("//pom:configurationFile");
         System.out.println(node.getText());
         return node.getText();
+    }
+
+    /**
+     * 获取所有的Java类型，使用Set去重
+     */
+    private static Set<String> getJavaTypes(List<Field> fieldList) {
+        Set<String> set = new HashSet<>();
+        for (int i = 0; i < fieldList.size(); i++) {
+            Field field = fieldList.get(i);
+            set.add(field.getJavaType());
+        }
+        return set;
     }
 }
