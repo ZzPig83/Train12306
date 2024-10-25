@@ -18,7 +18,6 @@ import java.util.*;
 public class ServerGenerator {
     static boolean readOnly = true;
 //    static String vuePath = "admin/src/views/main/";
-//    static String serverPath = "[module]/src/main/java/com/jiawa/train/[module]/";
     static String serverPath = "[module]/src/main/java/com/zzpig/train/[module]/";
     static String pomPath = "generator/pom.xml";
 //    static String module = "";
@@ -62,7 +61,7 @@ public class ServerGenerator {
         String domain = Domain.substring(0, 1).toLowerCase() + Domain.substring(1);
         // do_main = jiawa-test
         String do_main = tableName.getText().replaceAll("_", "-");
-//        // 表中文名
+        // 表中文名
         String tableNameCn = DbUtil.getTableComment(tableName.getText());
         List<Field> fieldList = DbUtil.getColumnByTableName(tableName.getText());
         Set<String> typeSet = getJavaTypes(fieldList);
@@ -79,15 +78,16 @@ public class ServerGenerator {
         param.put("readOnly", readOnly);
         System.out.println("组装参数：" + param);
 
-        generate(Domain, param,"service");
-        generate(Domain, param, "controller");
+//        generate(Domain, param,"service", "service");
+//        generate(Domain, param, "controller", "controller");
+        generate(Domain, param, "req", "saveReq");
     }
 
-    private static void generate(String Domain, Map<String, Object> param, String target) throws IOException, TemplateException {
+    private static void generate(String Domain, Map<String, Object> param, String packageName, String target) throws IOException, TemplateException {
         FreemarkerUtil.initConfig(target + ".ftl");
-        String toPath = serverPath + target + "/";
+        String toPath = serverPath + packageName + "/";
         new File(toPath).mkdirs();
-        String Target = target.substring(0,1).toUpperCase() + target.substring(1);
+        String Target = target.substring(0, 1).toUpperCase() + target.substring(1);
         String fileName = toPath + Domain + Target + ".java";
         System.out.println("开始生成：" + fileName);
         FreemarkerUtil.generator(fileName, param);
