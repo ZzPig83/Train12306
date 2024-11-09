@@ -2,7 +2,6 @@ package com.zzpig.train.common.controller;
 
 import com.zzpig.train.common.exception.BusinessException;
 import com.zzpig.train.common.resp.CommonResp;
-import com.zzpig.train.common.resp.CommonResp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindException;
