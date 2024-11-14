@@ -1,0 +1,42 @@
+<template>
+  <a-layout id="components-layout-demo-top-side-2">
+    <the-header-view></the-header-view>
+    <a-layout>
+      <the-sider-view></the-sider-view>
+      <a-layout-content
+          :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
+      >
+        <router-view></router-view>
+      </a-layout-content>
+    </a-layout>
+  </a-layout>
+</template>
+<script>
+// import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons-vue';
+import { defineComponent,  } from 'vue';
+import TheHeaderView from "@/components/the-header.vue";
+import TheSiderView from "@/components/the-sider.vue";
+// import axios from "axios";
+// import {notification} from "ant-design-vue";
+export default defineComponent({
+  components: {
+    TheSiderView,
+    TheHeaderView,
+
+  },
+  setup() {
+
+
+    return {
+
+    };
+  },
+});
+</script>
+<style>
+
+
+.site-layout-background {
+  background: #fff;
+}
+</style>
