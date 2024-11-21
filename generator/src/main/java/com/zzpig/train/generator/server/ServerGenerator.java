@@ -17,7 +17,7 @@ import java.util.*;
 
 public class ServerGenerator {
     static boolean readOnly = true;
-    static String vuePath = "web/src/views/main/";
+    static String vuePath = "admin/src/views/main/";
     static String serverPath = "[module]/src/main/java/com/zzpig/train/[module]/";
     static String pomPath = "generator/pom.xml";
     static String module = "";
@@ -28,6 +28,7 @@ public class ServerGenerator {
     public static void main(String[] args) throws Exception {
         // 获取mybatis-generator
         String generatorPath = getGeneratorPath();
+        System.out.println("generatorPath: " + generatorPath);
         // 比如generator-config-member.xml，得到module = member
         String module = generatorPath.replace("src/main/resources/generator-config-", "").replace(".xml", "");
         System.out.println("module: " + module);
@@ -38,7 +39,7 @@ public class ServerGenerator {
         // 读取table节点
         Document document = new SAXReader().read("generator/" + generatorPath);
         Node table = document.selectSingleNode("//table");
-        System.out.println(table);
+        System.out.println("table: "+ table);
         Node tableName = table.selectSingleNode("@tableName");
         Node domainObjectName = table.selectSingleNode("@domainObjectName");
         System.out.println(tableName.getText() + "/" + domainObjectName.getText());
@@ -80,7 +81,11 @@ public class ServerGenerator {
 
 //        generate(Domain, param,"service", "service");
 //        generate(Domain, param, "controller", "controller");
-        generate(Domain, param, "req", "saveReq");
+//        generate(Domain, param, "req", "saveReq");
+//        generate(Domain, param, "req", "queryReq");
+//        generate(Domain, param, "resp", "queryResp");
+
+        generateVue(do_main, param);
     }
 
     private static void generate(String Domain, Map<String, Object> param, String packageName, String target) throws IOException, TemplateException {

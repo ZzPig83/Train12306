@@ -10,7 +10,7 @@ import org.springframework.core.env.Environment;
 
 @SpringBootApplication
 @ComponentScan("com.zzpig")
-//@MapperScan("com.zzpig.train.business.mapper")
+@MapperScan("com.zzpig.train.business.mapper")
 public class BusinessApplication {
 
     private static final Logger LOG = LoggerFactory.getLogger(BusinessApplication.class);
