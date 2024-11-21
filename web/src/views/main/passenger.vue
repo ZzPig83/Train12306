@@ -40,7 +40,7 @@
       </a-form-item>
       <a-form-item label="类型">
         <a-select v-model:value="passenger.type">
-          <a-select-option v-for="item in PASSENGER_TYPE_ARRAY" :key="item.key" :value="item.value">
+          <a-select-option v-for="item in PASSENGER_TYPE_ARRAY" :key="item.key" :value="item.key">
             {{item.value}}
           </a-select-option>
         </a-select>

@@ -21,6 +21,11 @@
           <coffee-outlined /> 车站管理
         </router-link>
       </a-menu-item>
+      <a-menu-item key="/train">
+        <router-link to="/train">
+          <coffee-outlined /> 车站管理
+        </router-link>
+      </a-menu-item>
       <a-menu-item key="3">nav 3</a-menu-item>
     </a-menu>
   </a-layout-sider>

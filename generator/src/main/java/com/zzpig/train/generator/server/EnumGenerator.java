@@ -5,7 +5,7 @@ import cn.hutool.core.util.StrUtil;
 //import com.zzpig.train.business.enums.ConfirmOrderStatusEnum;
 //import com.zzpig.train.business.enums.SeatColEnum;
 //import com.zzpig.train.business.enums.SeatTypeEnum;
-//import com.zzpig.train.business.enums.TrainTypeEnum;
+import com.zzpig.train.business.enums.TrainTypeEnum;
 import com.zzpig.train.member.enums.PassengerTypeEnum;
 
 import java.io.FileOutputStream;
@@ -19,7 +19,7 @@ import java.util.List;
 
 public class EnumGenerator {
     // static String path = "web/src/assets/js/enums.js";
-    static String path = "web/src/assets/enums.js";
+    static String path = "admin/src/assets/enums.js";
 
     public static void main(String[] args) {
         StringBuffer bufferObject = new StringBuffer();
@@ -27,7 +27,7 @@ public class EnumGenerator {
         long begin = System.currentTimeMillis();
         try {
             toJson(PassengerTypeEnum.class, bufferObject, bufferArray);
-//            toJson(TrainTypeEnum.class, bufferObject, bufferArray);
+            toJson(TrainTypeEnum.class, bufferObject, bufferArray);
 //            toJson(SeatTypeEnum.class, bufferObject, bufferArray);
 //            toJson(SeatColEnum.class, bufferObject, bufferArray);
 //            toJson(ConfirmOrderStatusEnum.class, bufferObject, bufferArray);

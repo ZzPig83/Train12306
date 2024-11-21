@@ -22,7 +22,8 @@ public class PassengerController {
     PassengerService passengerService;
 
     @PostMapping("/save")
-    public CommonResp<Long> save(@Valid @RequestBody PassengerSaveReq req){
+    public CommonResp<Long> save( @RequestBody PassengerSaveReq req){
+        req.setMemberId(LoginMemberContext.getId());
         passengerService.save(req);
         return new CommonResp<>();
     }
