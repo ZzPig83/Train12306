@@ -18,12 +18,17 @@
       </a-menu-item>
       <a-menu-item key="/station">
         <router-link to="/station">
-          <coffee-outlined /> 车站管理
+          <coffee-outlined /> station
         </router-link>
       </a-menu-item>
       <a-menu-item key="/train">
         <router-link to="/train">
-          <coffee-outlined /> 车站管理
+          <coffee-outlined /> train
+        </router-link>
+      </a-menu-item>
+      <a-menu-item key="/train-station">
+        <router-link to="/train-station">
+          <coffee-outlined /> train-station
         </router-link>
       </a-menu-item>
       <a-menu-item key="3">nav 3</a-menu-item>
