@@ -79,13 +79,13 @@ public class ServerGenerator {
         param.put("readOnly", readOnly);
         System.out.println("组装参数：" + param);
 
-//        generate(Domain, param,"service", "service");
-//        generate(Domain, param, "controller", "controller");
-//        generate(Domain, param, "req", "saveReq");
-//        generate(Domain, param, "req", "queryReq");
-//        generate(Domain, param, "resp", "queryResp");
+        generate(Domain, param,"service", "service");
+        generate(Domain, param, "controller", "controller");
+        generate(Domain, param, "req", "saveReq");
+        generate(Domain, param, "req", "queryReq");
+        generate(Domain, param, "resp", "queryResp");
 
-        generateVue(do_main, param);
+//        generateVue(do_main, param);
     }
 
     private static void generate(String Domain, Map<String, Object> param, String packageName, String target) throws IOException, TemplateException {
