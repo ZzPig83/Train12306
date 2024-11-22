@@ -36,6 +36,11 @@
           <coffee-outlined /> train-carriage
         </router-link>
       </a-menu-item>
+      <a-menu-item key="/train-seat">
+        <router-link to="/train-seat">
+          <coffee-outlined /> train-seat
+        </router-link>
+      </a-menu-item>
       <a-menu-item key="3">nav 3</a-menu-item>
     </a-menu>
   </a-layout-sider>

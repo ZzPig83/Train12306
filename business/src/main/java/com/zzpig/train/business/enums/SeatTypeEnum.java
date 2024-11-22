@@ -1,4 +1,4 @@
-package com.zzpig.train.member.enums;
+package com.zzpig.train.business.enums;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
