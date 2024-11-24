@@ -18,27 +18,27 @@
       </a-menu-item>
       <a-menu-item key="/station">
         <router-link to="/station">
-          <coffee-outlined /> station
+          <highlight-outlined /> station
         </router-link>
       </a-menu-item>
       <a-menu-item key="/train">
         <router-link to="/train">
-          <coffee-outlined /> train
+          <highlight-outlined /> train
         </router-link>
       </a-menu-item>
       <a-menu-item key="/train-station">
         <router-link to="/train-station">
-          <coffee-outlined /> train-station
+          <highlight-outlined /> train-station
         </router-link>
       </a-menu-item>
       <a-menu-item key="/train-carriage">
         <router-link to="/train-carriage">
-          <coffee-outlined /> train-carriage
+          <highlight-outlined /> train-carriage
         </router-link>
       </a-menu-item>
       <a-menu-item key="/train-seat">
         <router-link to="/train-seat">
-          <coffee-outlined /> train-seat
+          <highlight-outlined /> train-seat
         </router-link>
       </a-menu-item>
       <a-menu-item key="3">nav 3</a-menu-item>
