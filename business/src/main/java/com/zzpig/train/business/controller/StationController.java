@@ -38,4 +38,10 @@ public class StationController {
         stationService.delete(id);
         return new CommonResp<>();
     }
+
+    @GetMapping("/query-all")
+    public CommonResp<List<StationQueryResp>> queryAll(){
+        List<StationQueryResp> list = stationService.queryAll();
+        return new CommonResp<>(list);
+    }
 }
