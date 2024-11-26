@@ -23,7 +23,7 @@ public class TrainController {
 
     @PostMapping("/save")
     public CommonResp<Long> save(@Valid @RequestBody TrainSaveReq req){
-    trainService.save(req);
+        trainService.save(req);
         return new CommonResp<>();
     }
 

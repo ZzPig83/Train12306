@@ -13,6 +13,10 @@ const routes = [
       path: 'welcome',
       component: () =>import('../views/main/welcome.vue')
     }, {
+      path: '/about',
+      name: 'about',
+      component: () => import('../views/main/about.vue')
+    }, {
         path: '/station',
         component: () => import('../views/main/station.vue')
       },{
@@ -28,11 +32,6 @@ const routes = [
       path: '/train-seat',
       component: () => import('../views/main/train-seat.vue')
     }]
-  },
-  {
-    path: '/about',
-    name: 'about',
-    component: () => import('../views/main/about.vue')
   },
   {
     path: '',
