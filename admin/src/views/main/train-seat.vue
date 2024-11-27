@@ -16,7 +16,7 @@
       </template>
       <template v-else-if="column.dataIndex === 'col'">
         <span v-for="item in SEAT_COL_ARRAY" :key="item.key">
-          <span v-if="item.key === record.col">
+          <span v-if="item.key === record.col && item.type === record.seatType">
             {{item.value}}
           </span>
         </span>
@@ -30,6 +30,7 @@
       </template>
     </template>
   </a-table>
+
   <a-modal v-model:visible="visible" title="座位" @ok="handleOk"
            ok-text="确认" cancel-text="取消">
     <a-form :model="trainSeat" :label-col="{span: 4}" :wrapper-col="{ span: 20 }">
