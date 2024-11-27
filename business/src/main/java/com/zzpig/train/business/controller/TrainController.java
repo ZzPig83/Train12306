@@ -1,5 +1,6 @@
 package com.zzpig.train.business.controller;
 
+import com.zzpig.train.business.service.TrainSeatService;
 import com.zzpig.train.common.context.LoginMemberContext;
 import com.zzpig.train.common.resp.CommonResp;
 import com.zzpig.train.common.resp.PageResp;
@@ -20,6 +21,9 @@ public class TrainController {
 
     @Autowired
     TrainService trainService;
+
+    @Autowired
+    TrainSeatService trainSeatService;
 
     @PostMapping("/save")
     public CommonResp<Long> save(@Valid @RequestBody TrainSaveReq req){
@@ -44,4 +48,12 @@ public class TrainController {
         List<TrainQueryResp> list = trainService.queryAll();
         return new CommonResp<>(list);
     }
+
+    @GetMapping("/gen-seat/{trainCode}")
+    public CommonResp<Object> genSeat(@PathVariable String trainCode){
+        trainSeatService.genTrainSeat(trainCode);
+        return new CommonResp<>();
+    }
+
+
 }

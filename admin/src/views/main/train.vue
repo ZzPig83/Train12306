@@ -19,6 +19,11 @@
                         ok-text="yes" cancel-text="no">
             <a style="color: red">删除</a>
           </a-popconfirm>
+          <a-popconfirm title="将删除已有记录，确认生成座位？"
+                        @confirm="genSeat(record)"
+                        ok-text="yes" cancel-text="no">
+            <a>生成座位</a>
+          </a-popconfirm>
         </a-space>
       </template>
       <template v-else-if="column.dataIndex === 'type'">
@@ -221,7 +226,19 @@ export default defineComponent({
           notification.error({description: data.message});
         }
       });
-    }
+    };
+
+    const　genSeat = (record) => {
+      axios.get("/business/admin/train/gen-seat/" + record.code).then(response =>{
+        loading.value = false;
+        let data = response.data;
+        if(data.success) {
+          notification.success({description: "生成成功"});
+        } else {
+          notification.error({description: data.message});
+        }
+      })
+    };
 
     onMounted(() => {
       handleQuery({
@@ -244,6 +261,7 @@ export default defineComponent({
       handleQuery,
       onDelete,
       loading,
+      genSeat,
     };
   },
 });
