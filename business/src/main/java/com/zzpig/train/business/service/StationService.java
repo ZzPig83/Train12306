@@ -1,10 +1,13 @@
 package com.zzpig.train.business.service;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.zzpig.train.common.exception.BusinessException;
+import com.zzpig.train.common.exception.BusinessExceptionEnum;
 import com.zzpig.train.common.resp.PageResp;
 import com.zzpig.train.common.util.SnowUtil;
 import com.zzpig.train.business.domain.Station;
@@ -32,6 +35,12 @@ public class StationService {
         DateTime now = DateTime.now();
         Station station = BeanUtil.copyProperties(req, Station.class);
         if (ObjectUtil.isNull(station.getId())) {
+            // 保存之前先校验唯一键是否已经存在
+            Station sta = selectByUnique(req.getName());
+            if (ObjectUtil.isNotEmpty(sta)) {
+                throw new BusinessException(BusinessExceptionEnum.BUSINESS_STATION_NAME_UNIQUE_ERROR);
+            }
+
             station.setId(SnowUtil.getSnowflakeNextId());
             station.setCreateTime(now);
             station.setUpdateTime(now);
@@ -40,6 +49,19 @@ public class StationService {
             station.setUpdateTime(now);
             stationMapper.updateByPrimaryKey(station);
         }
+    }
+
+    private Station selectByUnique(String name) {
+        StationExample stationExample = new StationExample();
+        StationExample.Criteria criteria = stationExample.createCriteria();
+        criteria.andNameEqualTo(name);
+        List<Station> list = stationMapper.selectByExample(stationExample);
+        if (CollUtil.isNotEmpty(list)) {
+            return list.get(0);
+        } else {
+            return null;
+        }
+
     }
 
     public PageResp<StationQueryResp> queryList(StationQueryReq req) {
