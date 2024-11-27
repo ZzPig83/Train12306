@@ -1,10 +1,15 @@
 package com.zzpig.train.business.service;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.zzpig.train.business.domain.Station;
+import com.zzpig.train.business.domain.StationExample;
+import com.zzpig.train.common.exception.BusinessException;
+import com.zzpig.train.common.exception.BusinessExceptionEnum;
 import com.zzpig.train.common.resp.PageResp;
 import com.zzpig.train.common.util.SnowUtil;
 import com.zzpig.train.business.domain.Train;
@@ -32,6 +37,12 @@ public class TrainService {
         DateTime now = DateTime.now();
         Train train = BeanUtil.copyProperties(req, Train.class);
         if (ObjectUtil.isNull(train.getId())) {
+            // 保存之前先校验唯一键是否已经存在
+            Train tra = selectByUnique(req.getCode());
+            if (ObjectUtil.isNotEmpty(tra)) {
+                throw new BusinessException(BusinessExceptionEnum.BUSINESS_STATION_NAME_UNIQUE_ERROR);
+            }
+
             train.setId(SnowUtil.getSnowflakeNextId());
             train.setCreateTime(now);
             train.setUpdateTime(now);
@@ -39,6 +50,18 @@ public class TrainService {
         } else {
             train.setUpdateTime(now);
             trainMapper.updateByPrimaryKey(train);
+        }
+    }
+
+    private Train selectByUnique(String code) {
+        TrainExample trainExample = new TrainExample();
+        TrainExample.Criteria criteria = trainExample.createCriteria();
+        criteria.andCodeEqualTo(code);
+        List<Train> list = trainMapper.selectByExample(trainExample);
+        if (CollUtil.isNotEmpty(list)) {
+            return list.get(0);
+        } else {
+            return null;
         }
     }
 
