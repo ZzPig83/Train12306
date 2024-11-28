@@ -30,7 +30,7 @@ package com.zzpig.train.batch.config;
                  .forJob(jobDetail())
                  .withIdentity("trigger", "trigger")
                  .startNow()
-                 .withSchedule(CronScheduleBuilder.cronSchedule("*/2 * * * * ?"))
+                 .withSchedule(CronScheduleBuilder.cronSchedule("*/5 * * * * ?"))
                  .build();
      }
  }
