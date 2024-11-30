@@ -37,7 +37,7 @@
       </#list>
     </template>
   </a-table>
-<#--  <#if !readOnly>-->
+  <#if !readOnly>
   <a-modal v-model:visible="visible" title="${tableNameCn}" @ok="handleOk"
            ok-text="确认" cancel-text="取消">
     <a-form :model="${domain}" :label-col="{span: 4}" :wrapper-col="{ span: 20 }">
@@ -66,7 +66,7 @@
       </#list>
     </a-form>
   </a-modal>
-<#--  </#if>-->
+  </#if>
 </template>
 
 <script>
@@ -106,15 +106,15 @@ export default defineComponent({
     },
       </#if>
     </#list>
-<#--    <#if !readOnly>-->
+    <#if !readOnly>
     {
       title: '操作',
       dataIndex: 'operation'
     }
-<#--    </#if>-->
+    </#if>
     ];
 
-<#--    <#if !readOnly>-->
+    <#if !readOnly>
     const onAdd = () => {
       ${domain}.value = {};
       visible.value = true;
@@ -155,7 +155,7 @@ export default defineComponent({
         }
       });
     };
-<#--    </#if>-->
+    </#if>
 
     const handleQuery = (param) => {
       if (!param) {
@@ -214,12 +214,12 @@ export default defineComponent({
       handleTableChange,
       handleQuery,
       loading,
-<#--      <#if !readOnly>-->
+      <#if !readOnly>
       onAdd,
       handleOk,
       onEdit,
       onDelete
-<#--      </#if>-->
+      </#if>
     };
   },
 });

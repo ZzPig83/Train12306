@@ -16,7 +16,7 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class ServerGenerator {
-    static boolean readOnly = true;
+    static boolean readOnly = false;
     static String vuePath = "admin/src/views/main/";
     static String serverPath = "[module]/src/main/java/com/zzpig/train/[module]/";
     static String pomPath = "generator/pom.xml";
