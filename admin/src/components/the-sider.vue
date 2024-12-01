@@ -74,6 +74,11 @@
             <right-square-outlined /> 每日车次
           </router-link>
         </a-menu-item>
+        <a-menu-item key="/business/daily-train-station">
+          <router-link to="/business/daily-train-station">
+            <right-square-outlined /> 每日途径车站
+          </router-link>
+        </a-menu-item>
       </a-sub-menu>
 
       <a-menu-item key="3">nav 3</a-menu-item>
