@@ -1,7 +1,7 @@
 <template>
   <p>
     <a-space>
-      <a-date-picker v-model:value="params.date" format="YYYY-MM-DD" valueFormat="YYYY-MM-DD" placeholder="请选择日期" />
+      <a-date-picker v-model:value="params.date" format="YYYY-MM-DD" valueFormat="YYYY-MM-DD" placeholder="请选后一天"/>
       <train-select-view v-model="params.code" width="200px"></train-select-view>
       <a-button type="primary" @click="handleQuery()">查找</a-button>
       <a-button type="primary" @click="onAdd">新增</a-button>
@@ -37,7 +37,7 @@
            ok-text="确认" cancel-text="取消">
     <a-form :model="dailyTrain" :label-col="{span: 4}" :wrapper-col="{ span: 20 }">
       <a-form-item label="日期">
-        <a-date-picker v-model:value="dailyTrain.date" valueFormat="YYYY-MM-DD" placeholder="请选择日期" />
+        <a-date-picker v-model:value="dailyTrain.date" format="YYYY-MM-DD" valueFormat="YYYY-MM-DD" placeholder="请选择日期" />
       </a-form-item>
       <a-form-item label="车次编号">
         <train-select-view v-model="dailyTrain.code" width="50%" @change="onChangeCode"></train-select-view>
@@ -76,6 +76,7 @@ import { defineComponent, ref, onMounted } from 'vue';
 import {notification} from "ant-design-vue";
 import axios from "axios";
 import TrainSelectView from "@/components/train-select.vue";
+import dayjs from "dayjs";
 
 export default defineComponent({
   name: "daily-train-view",
@@ -187,6 +188,7 @@ export default defineComponent({
     };
 
     const handleOk = () => {
+      dailyTrain.value.date = dayjs(dailyTrain.value.date).add(1, 'day').format('YYYY-MM-DD');
       axios.post("/business/admin/daily-train/save", dailyTrain.value).then((response) => {
         let data = response.data;
         if (data.success) {
