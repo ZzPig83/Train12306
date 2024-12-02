@@ -1,5 +1,13 @@
 package com.zzpig.train.business.controller;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
+import com.zzpig.train.business.domain.DailyTrain;
+import com.zzpig.train.business.domain.DailyTrainExample;
+import com.zzpig.train.business.domain.Train;
+import com.zzpig.train.business.service.TrainService;
 import com.zzpig.train.common.context.LoginMemberContext;
 import com.zzpig.train.common.resp.CommonResp;
 import com.zzpig.train.common.resp.PageResp;
@@ -8,18 +16,26 @@ import com.zzpig.train.business.req.DailyTrainQueryReq;
 import com.zzpig.train.business.req.DailyTrainSaveReq;
 import com.zzpig.train.business.resp.DailyTrainQueryResp;
 import com.zzpig.train.business.service.DailyTrainService;
+import com.zzpig.train.common.util.SnowUtil;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
 @RequestMapping("/admin/daily-train")
 public class DailyTrainController {
+    private static final Logger LOG = LoggerFactory.getLogger(DailyTrainController.class);
 
     @Autowired
     DailyTrainService dailyTrainService;
+
 
     @PostMapping("/save")
     public CommonResp<Long> save(@Valid @RequestBody DailyTrainSaveReq req){
@@ -38,4 +54,11 @@ public class DailyTrainController {
         dailyTrainService.delete(id);
         return new CommonResp<>();
     }
+
+    @GetMapping("/gen-daily/{date}")
+    public CommonResp<Object> delete(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date){
+        dailyTrainService.genDaily(date);
+        return new CommonResp<>();
+    }
+
 }

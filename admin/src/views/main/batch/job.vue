@@ -265,7 +265,6 @@ export default defineComponent({
       jobs,
       loading,
       handleQuery,
-
       handleAdd,
       handleEdit,
       handleDelete,

@@ -3,17 +3,15 @@ package com.zzpig.train.business.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.zzpig.train.business.domain.Station;
-import com.zzpig.train.business.domain.StationExample;
+import com.zzpig.train.business.domain.*;
 import com.zzpig.train.common.exception.BusinessException;
 import com.zzpig.train.common.exception.BusinessExceptionEnum;
 import com.zzpig.train.common.resp.PageResp;
 import com.zzpig.train.common.util.SnowUtil;
-import com.zzpig.train.business.domain.Train;
-import com.zzpig.train.business.domain.TrainExample;
 import com.zzpig.train.business.mapper.TrainMapper;
 import com.zzpig.train.business.req.TrainQueryReq;
 import com.zzpig.train.business.req.TrainSaveReq;
@@ -21,8 +19,11 @@ import com.zzpig.train.business.resp.TrainQueryResp;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -32,6 +33,7 @@ public class TrainService {
 
     @Resource
     private TrainMapper trainMapper;
+
 
     public void save(TrainSaveReq req) {
         DateTime now = DateTime.now();
@@ -92,10 +94,14 @@ public class TrainService {
     }
 
     public List<TrainQueryResp> queryAll() {
-        TrainExample trainExample = new TrainExample();
-        trainExample.setOrderByClause("code desc");
-        List<Train> trainList = trainMapper.selectByExample(trainExample);
-
+        List<Train> trainList = selectAll();
         return BeanUtil.copyToList(trainList, TrainQueryResp.class);
     }
+
+    public List<Train> selectAll() {
+        TrainExample trainExample = new TrainExample();
+        trainExample.setOrderByClause("code desc");
+        return trainMapper.selectByExample(trainExample);
+    }
+
 }
