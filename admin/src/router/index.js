@@ -22,16 +22,16 @@ const routes = [
         {
           path: '/station',
           component: () => import('../views/main/base/station.vue')
-        },{
+        }, {
           path: '/train',
           component: () => import('../views/main/base/train.vue')
-        },{
+        }, {
           path: '/train-station',
           component: () => import('../views/main/base/train-station.vue')
-        },{
+        }, {
           path: '/train-carriage',
           component: () => import('../views/main/base/train-carriage.vue')
-        },{
+        }, {
           path: '/train-seat',
           component: () => import('../views/main/base/train-seat.vue')
         }
@@ -59,6 +59,9 @@ const routes = [
         }, {
           path: 'daily-train-seat',
           component: () => import('../views/main/business/daily-train-seat.vue')
+        }, {
+          path: 'daily-train-ticket',
+          component: () => import('../views/main/business/daily-train-ticket.vue')
         }
       ]
     }]

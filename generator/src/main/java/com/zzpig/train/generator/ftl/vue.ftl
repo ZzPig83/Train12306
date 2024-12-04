@@ -2,7 +2,7 @@
   <p>
     <a-space>
       <a-button type="primary" @click="handleQuery()">刷新</a-button>
-      <a-button type="primary" @click="onAdd">新增</a-button>
+      <#if !readOnly><a-button type="primary" @click="onAdd">新增</a-button></#if>
     </a-space>
   </p>
   <a-table :dataSource="${domain}s"
