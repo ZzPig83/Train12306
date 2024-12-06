@@ -16,7 +16,11 @@
           <coffee-outlined /> 乘车人管理
         </router-link>
       </a-menu-item>
-      <a-menu-item key="3">nav 3</a-menu-item>
+      <a-menu-item key="/ticket">
+        <router-link to="/ticket">
+          <right-square-outlined /> 余票信息
+        </router-link>
+      </a-menu-item>
     </a-menu>
   </a-layout-sider>
 </template>
