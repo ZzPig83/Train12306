@@ -5,6 +5,7 @@ import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.zzpig.train.common.context.LoginMemberContext;
 import com.zzpig.train.common.resp.PageResp;
 import com.zzpig.train.common.util.SnowUtil;
 import com.zzpig.train.member.domain.Passenger;
@@ -46,6 +47,7 @@ public class PassengerService {
         PassengerExample passengerExample = new PassengerExample();
         passengerExample.setOrderByClause("id desc");
         PassengerExample.Criteria criteria = passengerExample.createCriteria();
+        criteria.andMemberIdEqualTo(req.getMemberId());
 
         LOG.info("查询页码：{}", req.getPage());
         LOG.info("每页条数：{}", req.getSize());
@@ -66,5 +68,14 @@ public class PassengerService {
 
     public void delete(Long id) {
         passengerMapper.deleteByPrimaryKey(id);
+    }
+
+    public List<PassengerQueryResp> queryMine() {
+        PassengerExample passengerExample = new PassengerExample();
+        passengerExample.setOrderByClause("name asc");
+        PassengerExample.Criteria criteria = passengerExample.createCriteria();
+        criteria.andMemberIdEqualTo(LoginMemberContext.getId());
+        List<Passenger> list = passengerMapper.selectByExample(passengerExample);
+        return BeanUtil.copyToList(list, PassengerQueryResp.class);
     }
 }
