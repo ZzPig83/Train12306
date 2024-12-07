@@ -14,6 +14,7 @@
            :loading="loading">
     <template #bodyCell="{ column, record }">
       <template v-if="column.dataIndex === 'operation'">
+        <a-button type="primary" @click="toOrder(record)">预订</a-button>
       </template>
       <template v-else-if="column.dataIndex === 'station'">
         {{record.start}}<br/>
@@ -79,9 +80,10 @@ import axios from "axios";
 // import TrainSelectView from "@/components/train-select.vue";
 import StationSelectView from "@/components/station-select.vue";
 import dayjs from "dayjs";
+import router from "@/router";
 
 export default defineComponent({
-  name: "daily-train-ticket-view",
+  name: "ticket",
   components: {StationSelectView,},
   setup() {
     const visible = ref(false);
@@ -224,6 +226,10 @@ export default defineComponent({
       //   dataIndex: 'ywPrice',
       //   key: 'ywPrice',
       // },
+      {
+        title: '操作',
+        dataIndex: 'operation'
+      }
     ];
 
 
@@ -241,6 +247,9 @@ export default defineComponent({
         notification.error({description: "请选择目的地"});
         return;
       }
+
+      // 保存查询参数
+      SessionStorage.set(SESSION_TICKET_PARAMS, params.value);
 
       if (!param) {
         param = {
@@ -285,11 +294,21 @@ export default defineComponent({
       return dayjs('00:00:00', 'HH:mm:ss').second(diff).format('HH:mm:ss');
     };
 
+    const toOrder = (record) => {
+      dailyTrainTicket.value = Tool.copy(record);
+      SessionStorage.set(SESSION_ORDER, dailyTrainTicket.value);
+      router.push("/order");
+    }
+
     onMounted(() => {
-      // handleQuery({
-      //   page: 1,
-      //   size: pagination.value.pageSize
-      // });
+      params.value = SessionStorage.get(SESSION_TICKET_PARAMS) || {};
+      if(Tool.isNotEmpty(params.value)) {
+        handleQuery({
+          page: 1,
+          size: pagination.value.pageSize,
+
+        })
+      }
     });
 
     return {
@@ -302,7 +321,8 @@ export default defineComponent({
       handleQuery,
       loading,
       params,
-      calDuration
+      calDuration,
+      toOrder,
     };
   },
 });
