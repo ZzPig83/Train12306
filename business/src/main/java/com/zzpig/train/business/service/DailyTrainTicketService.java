@@ -78,6 +78,8 @@ public class DailyTrainTicketService {
         PageHelper.startPage(req.getPage(), req.getSize());
         List<DailyTrainTicket> dailyTrainTicketList = dailyTrainTicketMapper.selectByExample(dailyTrainTicketExample);
 
+        LOG.info("日期是：{}",dailyTrainTicketList);
+
         PageInfo<DailyTrainTicket> pageInfo = new PageInfo<>(dailyTrainTicketList);
         LOG.info("总行数：{}", pageInfo.getTotal());
         LOG.info("总页数：{}", pageInfo.getPages());

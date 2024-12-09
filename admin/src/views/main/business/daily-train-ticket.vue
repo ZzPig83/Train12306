@@ -356,8 +356,8 @@ export default defineComponent({
           size: param.size,
           trainCode: params.value.trainCode,
           date: params.value.date,
-          start: params.value.date,
-          end: params.value.date
+          start: params.value.start,
+          end: params.value.end
         }
       }).then((response) => {
         loading.value = false;
