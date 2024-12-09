@@ -258,7 +258,7 @@ export default defineComponent({
         };
       }
       loading.value = true;
-      axios.get("/business/admin/daily-train-ticket/query-list", {
+      axios.get("/business/daily-train-ticket/query-list", {
         params: {
           page: param.page,
           size: param.size,

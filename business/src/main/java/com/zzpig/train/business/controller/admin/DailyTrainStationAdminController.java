@@ -1,22 +1,18 @@
-package com.zzpig.train.business.controller;
+package com.zzpig.train.business.controller.admin;
 
-import com.zzpig.train.common.context.LoginMemberContext;
-import com.zzpig.train.common.resp.CommonResp;
-import com.zzpig.train.common.resp.PageResp;
-//import com.zzpig.train.business.req.MemberRegisterReq;
 import com.zzpig.train.business.req.DailyTrainStationQueryReq;
 import com.zzpig.train.business.req.DailyTrainStationSaveReq;
 import com.zzpig.train.business.resp.DailyTrainStationQueryResp;
 import com.zzpig.train.business.service.DailyTrainStationService;
+import com.zzpig.train.common.resp.CommonResp;
+import com.zzpig.train.common.resp.PageResp;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/admin/daily-train-station")
-public class DailyTrainStationController {
+public class DailyTrainStationAdminController {
 
     @Autowired
     DailyTrainStationService dailyTrainStationService;
