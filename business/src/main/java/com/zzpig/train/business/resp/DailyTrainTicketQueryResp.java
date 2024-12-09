@@ -38,7 +38,7 @@ public class DailyTrainTicketQueryResp {
     /**
      * 出发时间
      */
-    @JsonFormat(pattern = "HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "HH:mm:ss",timezone = "GMT+9")
     private Date startTime;
 
     /**
@@ -59,7 +59,7 @@ public class DailyTrainTicketQueryResp {
     /**
      * 到站时间
      */
-    @JsonFormat(pattern = "HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "HH:mm:ss",timezone = "GMT+9")
     private Date endTime;
 
     /**
@@ -110,13 +110,13 @@ public class DailyTrainTicketQueryResp {
     /**
      * 新增时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+9")
     private Date createTime;
 
     /**
      * 修改时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+9")
     private Date updateTime;
 
     public Long getId() {
