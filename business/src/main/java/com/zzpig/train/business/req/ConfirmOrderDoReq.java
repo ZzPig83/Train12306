@@ -19,7 +19,7 @@ public class ConfirmOrderDoReq {
     /**
      * 日期
      */
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+9")
     @NotNull(message = "【日期】不能为空")
     private Date date;
 

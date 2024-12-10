@@ -99,6 +99,7 @@ public class DailyTrainCarriageService {
         }
 
         for (TrainCarriage trainCarriage : carriageList) {
+            LOG.info("车厢座位数seatCount: {}",trainCarriage.getSeatCount());
             DateTime now = DateTime.now();
             DailyTrainCarriage dailyTrainCarriage = BeanUtil.copyProperties(trainCarriage, DailyTrainCarriage.class);
             dailyTrainCarriage.setId(SnowUtil.getSnowflakeNextId());
@@ -108,5 +109,14 @@ public class DailyTrainCarriageService {
             dailyTrainCarriageMapper.insert(dailyTrainCarriage);
         }
         LOG.info("生成日期【{}】车次【{}】的车厢信息结束", DateUtil.formatDate(date), trainCode);
+    }
+
+    public List<DailyTrainCarriage> selectbySeatType(Date date, String trainCode, String seatType) {
+        DailyTrainCarriageExample example = new DailyTrainCarriageExample();
+        example.createCriteria()
+                .andDateEqualTo(date)
+                .andTrainCodeEqualTo(trainCode)
+                .andSeatTypeEqualTo(seatType);
+        return dailyTrainCarriageMapper.selectByExample(example);
     }
 }

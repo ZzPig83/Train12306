@@ -84,8 +84,9 @@ public class DailyTrainSeatService {
                 .andTrainCodeEqualTo(trainCode);
         dailyTrainSeatMapper.deleteByExample(dailyTrainSeatExample);
 
-        // 查出某车次的所有车站信息
+        // 查出某车次的所有车座信息
         List<TrainSeat> seatList = trainSeatService.selectByTrainCode(trainCode);
+        LOG.info("座位总数：{}",seatList.size());
         if (CollUtil.isEmpty(seatList)) {
             LOG.info("该车次没有座位基础数据，生成该车次的座位信息结束");
             return;
@@ -115,5 +116,14 @@ public class DailyTrainSeatService {
             return -1;
         }
         return (int) count;
+    }
+
+    public List<DailyTrainSeat> selectByCarriage(Date date, String trainCode, Integer carriageIndex) {
+        DailyTrainSeatExample example = new DailyTrainSeatExample();
+        example.createCriteria()
+                .andDateEqualTo(date)
+                .andTrainCodeEqualTo(trainCode)
+                .andCarriageIndexEqualTo(carriageIndex);
+        return dailyTrainSeatMapper.selectByExample(example);
     }
 }
