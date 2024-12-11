@@ -35,8 +35,8 @@
       <a-col :span="6">{{ticket.passengerIdCard}}</a-col>
       <a-col :span="4">
         <a-select v-model:value="ticket.passengerType" style="width: 100%">
-          <a-select-option v-for="item in PASSENGER_TYPE_ARRAY" :key="item.key" :value="item.key">
-            {{item.value}}
+          <a-select-option v-for="item in PASSENGER_TYPE_ARRAY" :key="item.code" :value="item.code">
+            {{item.desc}}
           </a-select-option>
         </a-select>
       </a-col>

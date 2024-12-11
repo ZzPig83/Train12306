@@ -5,6 +5,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zzpig.train.business.domain.*;
@@ -32,7 +33,8 @@ public class DailyTrainSeatService {
     private DailyTrainSeatMapper dailyTrainSeatMapper;
     @Resource
     private TrainSeatService trainSeatService;
-
+    @Resource
+    private TrainStationService trainStationService;
     public void save(DailyTrainSeatSaveReq req) {
         DateTime now = DateTime.now();
         DailyTrainSeat dailyTrainSeat = BeanUtil.copyProperties(req, DailyTrainSeat.class);
@@ -84,6 +86,9 @@ public class DailyTrainSeatService {
                 .andTrainCodeEqualTo(trainCode);
         dailyTrainSeatMapper.deleteByExample(dailyTrainSeatExample);
 
+        List<TrainStation> stationList = trainStationService.selectByTrainCode(trainCode);
+        String sell = StrUtil.fillBefore("", '0', stationList.size() - 1);
+
         // 查出某车次的所有车座信息
         List<TrainSeat> seatList = trainSeatService.selectByTrainCode(trainCode);
         LOG.info("座位总数：{}",seatList.size());
@@ -99,7 +104,7 @@ public class DailyTrainSeatService {
             dailyTrainSeat.setCreateTime(now);
             dailyTrainSeat.setUpdateTime(now);
             dailyTrainSeat.setDate(date);
-            dailyTrainSeat.setSell("0");
+            dailyTrainSeat.setSell(sell);
             dailyTrainSeatMapper.insert(dailyTrainSeat);
         }
         LOG.info("生成日期【{}】车次【{}】的座位信息结束", DateUtil.formatDate(date), trainCode);
@@ -120,6 +125,7 @@ public class DailyTrainSeatService {
 
     public List<DailyTrainSeat> selectByCarriage(Date date, String trainCode, Integer carriageIndex) {
         DailyTrainSeatExample example = new DailyTrainSeatExample();
+        example.setOrderByClause("carriage_seat_index asc");
         example.createCriteria()
                 .andDateEqualTo(date)
                 .andTrainCodeEqualTo(trainCode)
