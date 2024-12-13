@@ -91,6 +91,7 @@ public class ConfirmOrderService {
 
     public void doConfirm(ConfirmOrderDoReq req) {
         // 省略业务数据校验，如：车次是否存在，余票是否存在，车次是否在有效期内，tickets条数>0，同乘客同车次是否已买过
+
         Date date = req.getDate();
         String trainCode = req.getTrainCode();
         String start = req.getStart();
@@ -174,7 +175,7 @@ public class ConfirmOrderService {
             // 余票详情表修改余票；
             // 为会员增加购票记录
             // 更新确认订单为成功
-        afterConfirmOrderService.afterDoConfirm(finalSeatList);
+        afterConfirmOrderService.afterDoConfirm(dailyTrainTicket, finalSeatList);
     }
     private void getSeat(List<DailyTrainSeat> finalSeatList, Date date, String trainCode, String seatType, String column, List<Integer> offsetList
             , Integer startIndex, Integer endIndex) {
@@ -222,6 +223,7 @@ public class ConfirmOrderService {
                     getSeatList.add(dailyTrainSeat);
                 } else {
                     LOG.info("未选中座位");
+                    continue;
                 }
 
                 // 根据offset选剩下的座位
