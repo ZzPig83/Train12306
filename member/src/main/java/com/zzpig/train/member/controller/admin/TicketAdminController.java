@@ -1,0 +1,24 @@
+package com.zzpig.train.member.controller.admin;
+
+import com.zzpig.train.common.resp.CommonResp;
+import com.zzpig.train.common.resp.PageResp;
+import com.zzpig.train.member.req.TicketQueryReq;
+import com.zzpig.train.member.resp.TicketQueryResp;
+import com.zzpig.train.member.service.TicketService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/admin/ticket")
+public class TicketAdminController {
+
+    @Autowired
+    TicketService ticketService;
+
+    @GetMapping("/query-list")
+    public CommonResp<PageResp<TicketQueryResp>> queryList(@Valid TicketQueryReq req){
+        PageResp<TicketQueryResp> list = ticketService.queryList(req);
+        return new CommonResp<>(list);
+    }
+}

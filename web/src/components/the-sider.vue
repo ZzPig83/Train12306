@@ -21,6 +21,11 @@
           <right-square-outlined /> 余票信息
         </router-link>
       </a-menu-item>
+      <a-menu-item key="/my-ticket">
+        <router-link to="/my-ticket">
+          <right-square-outlined /> 我的车票
+        </router-link>
+      </a-menu-item>
     </a-menu>
   </a-layout-sider>
 </template>
