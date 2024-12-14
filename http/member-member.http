@@ -11,3 +11,7 @@ client.log(JSON.stringify(response.body));
 client.log(JSON.stringify(response.body.content.token));
 client.global.set("token", response.body.content.token);
  %}
+
+###
+GET http://localhost:8000/member/hello
+Content-Type: application/json
