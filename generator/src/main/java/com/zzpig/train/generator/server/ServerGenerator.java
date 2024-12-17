@@ -17,7 +17,8 @@ import java.util.*;
 
 public class ServerGenerator {
     static boolean readOnly = true;
-    static String vuePath = "admin/src/views/main/";
+//    static String vuePath = "admin/src/views/main/";
+    static String vuePath = "web/src/views/main/";
     static String serverPath = "[module]/src/main/java/com/zzpig/train/[module]/";
     static String pomPath = "generator/pom.xml";
     static String module = "";
@@ -101,7 +102,7 @@ public class ServerGenerator {
     private static void generateVue(String do_main, Map<String, Object> param) throws IOException, TemplateException {
         FreemarkerUtil.initConfig("vue.ftl");
         new File(vuePath + module).mkdirs();
-        String fileName = vuePath + module + "/" + do_main + ".vue";
+        String fileName = vuePath + module + "/" + "my-" + do_main + ".vue";
         System.out.println("开始生成：" + fileName);
         FreemarkerUtil.generator(fileName, param);
     }
