@@ -1,2 +1,8 @@
 GET http://localhost:8000/business/admin/train/gen-seat/G3902
 Accept: application/json
+
+###
+
+GET http://localhost:8000/business/admin/daily-train-ticket/query-list
+    ?page=1&size=5&trainCode=G1&start=广州&end=上海
+Content-Type: application/json

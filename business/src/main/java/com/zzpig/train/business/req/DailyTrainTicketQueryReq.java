@@ -4,6 +4,7 @@ import com.zzpig.train.common.req.PageReq;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class DailyTrainTicketQueryReq extends PageReq {
     private String trainCode;
@@ -45,6 +46,19 @@ public class DailyTrainTicketQueryReq extends PageReq {
 
     public void setEnd(String end) {
         this.end = end;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DailyTrainTicketQueryReq that = (DailyTrainTicketQueryReq) o;
+        return Objects.equals(trainCode, that.trainCode) && Objects.equals(date, that.date) && Objects.equals(start, that.start) && Objects.equals(end, that.end);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(trainCode, date, start, end);
     }
 
     @Override
