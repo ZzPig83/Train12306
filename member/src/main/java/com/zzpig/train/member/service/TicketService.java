@@ -15,6 +15,7 @@ import com.zzpig.train.member.mapper.TicketMapper;
 import com.zzpig.train.member.req.TicketQueryReq;
 import com.zzpig.train.member.req.TicketSaveReq;
 import com.zzpig.train.member.resp.TicketQueryResp;
+//import io.seata.core.context.RootContext;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +31,8 @@ public class TicketService {
     @Resource
     private TicketMapper ticketMapper;
 
-    public void save(MemberTicketReq req) {
+    public void save(MemberTicketReq req) throws Exception {
+//        LOG.info("seata全局事务ID save: {}", RootContext.getXID());
         DateTime now = DateTime.now();
         Ticket ticket = BeanUtil.copyProperties(req, Ticket.class);
         if (ObjectUtil.isNull(ticket.getId())) {
@@ -42,6 +44,11 @@ public class TicketService {
             ticket.setUpdateTime(now);
             ticketMapper.updateByPrimaryKey(ticket);
         }
+
+         // 模拟被调用方出现异常
+//             if (1 == 1) {
+//                 throw new Exception("测试被调用方出现异常");
+//             }
     }
 
     public PageResp<TicketQueryResp> queryList(TicketQueryReq req) {

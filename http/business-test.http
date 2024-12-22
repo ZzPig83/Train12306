@@ -4,3 +4,12 @@ Accept: application/json
 ###
 GET http://localhost:8000/business/hello
 Accept: application/json
+
+{
+"dailyTrainTicketId":1867443854798622720,
+"date":1735570800000,
+"end":"北京",
+"start":"南京",
+"tickets":[{"passengerId":1866828874319532032,"passengerIdCard":"622821200108030018","passengerName":"孟小美","passengerType":"1","seatTypeCode":"2"}],
+"trainCode":"G1"
+}
