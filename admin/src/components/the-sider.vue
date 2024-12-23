@@ -99,6 +99,11 @@
             <right-square-outlined /> 订单信息
           </router-link>
         </a-menu-item>
+        <a-menu-item key="/business/sk-token">
+          <router-link to="/business/sk-token">
+            <right-square-outlined /> 令牌余量
+          </router-link>
+        </a-menu-item>
       </a-sub-menu>
 
       <a-sub-menu key="member">
