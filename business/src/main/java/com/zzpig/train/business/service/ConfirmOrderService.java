@@ -15,6 +15,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zzpig.train.business.domain.*;
 import com.zzpig.train.business.enums.ConfirmOrderStatusEnum;
+import com.zzpig.train.business.enums.RedisKeyPreEnum;
 import com.zzpig.train.business.enums.SeatColEnum;
 import com.zzpig.train.business.enums.SeatTypeEnum;
 import com.zzpig.train.business.req.ConfirmOrderTicketReq;
@@ -64,6 +65,8 @@ public class ConfirmOrderService {
     @Autowired
     private RedissonClient redissonClient;
 
+    @Resource SkTokenService skTokenService;
+
     public void save(ConfirmOrderDoReq req) {
         DateTime now = DateTime.now();
         ConfirmOrder confirmOrder = BeanUtil.copyProperties(req, ConfirmOrder.class);
@@ -106,7 +109,17 @@ public class ConfirmOrderService {
 
     @SentinelResource(value = "doConfirm", blockHandler = "doConfirmBlock")
     public void doConfirm(ConfirmOrderDoReq req) {
-        String lockKey = DateUtil.formatDate(req.getDate()) + "-" + req.getTrainCode();
+        // 校验令牌余量
+        boolean validSkToken = skTokenService.validSkToken(req.getDate(), req.getTrainCode(), LoginMemberContext.getId());
+        if (validSkToken) {
+            LOG.info("令牌校验通过");
+        } else {
+            LOG.info("令牌校验不通过");
+            throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_SKTOKEN_FAIL);
+        }
+
+        // 购票
+        String lockKey = RedisKeyPreEnum.CONFIRM_ORDER + "-" + DateUtil.formatDate(req.getDate()) + "-" + req.getTrainCode();
 //        Boolean setIfAbsent = redisTemplate.opsForValue().setIfAbsent(lockKey, lockKey, 60, TimeUnit.SECONDS);
 //        if (Boolean.TRUE.equals(setIfAbsent)) {
 //            LOG.info("恭喜，抢到锁了！lockKey: {}", lockKey);
