@@ -5,6 +5,7 @@ import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.zzpig.train.business.req.ConfirmOrderDoReq;
 import com.zzpig.train.business.req.ConfirmOrderQueryReq;
 import com.zzpig.train.business.resp.ConfirmOrderQueryResp;
+import com.zzpig.train.business.service.BeforeConfirmOrderService;
 import com.zzpig.train.business.service.ConfirmOrderService;
 import com.zzpig.train.common.exception.BusinessException;
 import com.zzpig.train.common.exception.BusinessExceptionEnum;
@@ -26,8 +27,8 @@ public class ConfirmOrderController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ConfirmOrderService.class);
 
-    @Autowired
-    ConfirmOrderService confirmOrderService;
+    @Resource
+    private BeforeConfirmOrderService beforeConfirmOrderService;
 
     @Resource
     public StringRedisTemplate stringrRedisTemplate;
@@ -52,7 +53,7 @@ public class ConfirmOrderController {
             stringrRedisTemplate.delete(imageCodeToken);
         }
 
-        confirmOrderService.doConfirm(req);
+        beforeConfirmOrderService.beforeDoConfirm(req);
         return new CommonResp<>();
     }
 

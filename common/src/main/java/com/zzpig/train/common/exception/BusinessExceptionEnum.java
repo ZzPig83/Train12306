@@ -15,7 +15,7 @@ public enum BusinessExceptionEnum {
 
     CONFIRM_ORDER_EXCEPTION("购票出现异常，请稍后再试"),
     CONFIRM_ORDER_LOCK_FAIL("当前繁忙，稍后再试"),
-    CONFIRM_ORDER_FLOW_EXCEPTION("当前抢票人数多，请稍重试"),
+    CONFIRM_ORDER_FLOW_EXCEPTION("当前抢票人数多，请稍后重试"),
     CONFIRM_ORDER_SKTOKEN_FAIL("操作频繁，请过5秒后重试")
     ;
 

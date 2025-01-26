@@ -346,7 +346,7 @@ export default defineComponent({
       }).then((response) => {
         let data = response.data;
         if (data.success) {
-          notification.success({description: "下单成功！"});
+          notification.success({description: "正在排队中，请稍后"});
         } else {
           notification.error({description: data.message});
         }
