@@ -16,6 +16,7 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.ObjectUtils;
@@ -33,28 +34,42 @@ public class ConfirmOrderController {
     @Resource
     public StringRedisTemplate stringrRedisTemplate;
 
+    @Resource
+    public ConfirmOrderService confirmOrderService;
+
+    @Value("${spring.profiles.active}")
+    private String env;
+
     @SentinelResource(value = "confirmOrderDo", blockHandler = "doConfirmBlock")
     @PostMapping("/do")
-    public CommonResp<Long> doConfirm(@Valid @RequestBody ConfirmOrderDoReq req){
-        // 图形验证码校验
-        String imageCodeToken = req.getImageCodeToken();
-        LOG.info("参数中的imageCodeToken: {}", imageCodeToken);
-        String imageCode = req.getImageCode();
-        String imageCodeRedis = (String) stringrRedisTemplate.opsForValue().get(imageCodeToken);
-        LOG.info("从redis中获取到的验证码：{}", imageCodeRedis);
-        if (ObjectUtils.isEmpty(imageCodeRedis)) {
-            return new CommonResp<>(false, "验证码已过期", null);
-        }
-        // 验证码校验，大小写忽略，提升体验
-        if (!imageCodeRedis.equalsIgnoreCase(imageCode)) {
-            return new CommonResp<>(false, "验证码不正确", null);
-        } else {
-            // 验证通过后，移除验证码
-            stringrRedisTemplate.delete(imageCodeToken);
+    public CommonResp<String> doConfirm(@Valid @RequestBody ConfirmOrderDoReq req){
+        if (!env.equals("dev")) {
+            // 图形验证码校验
+            String imageCodeToken = req.getImageCodeToken();
+            LOG.info("参数中的imageCodeToken: {}", imageCodeToken);
+            String imageCode = req.getImageCode();
+            String imageCodeRedis = (String) stringrRedisTemplate.opsForValue().get(imageCodeToken);
+            LOG.info("从redis中获取到的验证码：{}", imageCodeRedis);
+            if (ObjectUtils.isEmpty(imageCodeRedis)) {
+                return new CommonResp<>(false, "验证码已过期", null);
+            }
+            // 验证码校验，大小写忽略，提升体验
+            if (!imageCodeRedis.equalsIgnoreCase(imageCode)) {
+                return new CommonResp<>(false, "验证码不正确", null);
+            } else {
+                // 验证通过后，移除验证码
+                stringrRedisTemplate.delete(imageCodeToken);
+            }
         }
 
-        beforeConfirmOrderService.beforeDoConfirm(req);
-        return new CommonResp<>();
+        Long id =beforeConfirmOrderService.beforeDoConfirm(req);
+        return new CommonResp<>(String.valueOf(id));
+    }
+
+    @GetMapping("/query-line-count/{id}")
+    public CommonResp<Integer> queryLineCount(@PathVariable Long id) {
+        Integer count = confirmOrderService.queryLineCount(id);
+        return new CommonResp<>(count);
     }
 
     /**

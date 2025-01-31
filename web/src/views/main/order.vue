@@ -122,6 +122,18 @@
     </p>
     <a-button type="danger" block @click="handleOk">输入验证码后开始购票</a-button>
   </a-modal>
+
+  <a-modal v-model:visible="lineModalVisible" :title="null" :footer="null" :closeable="false"
+           style="top: 50px; width: 400px">
+    <div class="book-line">
+      <div v-show="confirmOrderLineCount < 0">
+        <loading-outlined />系统正在处理中...
+      </div>
+      <div v-show="confirmOrderLineCount >= 0">
+        <loading-outlined />您前面还有{{confirmOrderLineCount}}位用户在排队，请稍后...
+      </div>
+    </div>
+  </a-modal>
 </template>
 
 <script>
@@ -176,6 +188,9 @@ export default defineComponent({
     const tickets = ref([]);
     const PASSENGER_TYPE_ARRAY = window.PASSENGER_TYPE_ARRAY;
     let visible = ref(false);
+    const lineModalVisible = ref(false);
+    const confirmOrderId = ref();
+    const confirmOrderLineCount = ref(-1);
 
     // 勾选或去掉某个乘客时，在购票列表中加上或去掉一张表
     watch(() => passengerChecks.value, (newVal, oldVal)=> {
@@ -346,14 +361,56 @@ export default defineComponent({
       }).then((response) => {
         let data = response.data;
         if (data.success) {
-          notification.success({description: "正在排队中，请稍后"});
+          // notification.success({description: "正在排队中，请稍后"});
+          visible.value = false;
+          imageCodeModalVisible.value = false;
+          lineModalVisible.value = true;
+          confirmOrderId.value = data.content;
+          queryLineCount();
         } else {
           notification.error({description: data.message});
         }
       });
     }
 
-    /* ---------------- 验证码 --------------- */
+    /* ---------------- 定时查询订单状态 ---------------- */
+    let queryLineCountInterval;
+
+    // 定时查询订单结果/排队数量
+    const queryLineCount = () => {
+      confirmOrderLineCount.value = -1;
+      queryLineCountInterval = setInterval(function () {
+        axios.get("/business/confirm-order/query-line-count/" + confirmOrderId.value).then((response) => {
+          let data = response.data;
+          if (data.success) {
+            let result = data.content;
+            switch (result) {
+              case -1:
+                notification.success({description: "购票成功"});
+                lineModalVisible.value = false;
+                clearInterval(queryLineCountInterval);
+                break;
+              case -2:
+                notification.success({description: "购票失败"});
+                lineModalVisible.value = false;
+                clearInterval(queryLineCountInterval);
+                break;
+              case -3:
+                notification.success({description: "抱歉，没票了"});
+                lineModalVisible.value = false;
+                clearInterval(queryLineCountInterval);
+                break;
+              default:
+                confirmOrderLineCount.value = result;
+            }
+          } else {
+            notification.error({description: data.message});
+          }
+        })
+      }, 1000);
+    };
+
+    /* ---------------- 验证码 ---------------- */
     const imageCodeModalVisible = ref();
     const imageCodeToken = ref();
     const imageCodeSrc = ref();
@@ -395,7 +452,11 @@ export default defineComponent({
       imageCodeSrc,
       imageCode,
       loadImageCode,
-      showImageCodeModal
+      showImageCodeModal,
+      lineModalVisible,
+      confirmOrderId,
+      confirmOrderLineCount,
+      queryLineCount,
     };
   },
 });

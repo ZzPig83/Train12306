@@ -6,6 +6,7 @@ import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.fastjson.JSON;
 import com.zzpig.train.business.domain.ConfirmOrder;
+import com.zzpig.train.business.dto.ConfirmOrderMQDto;
 import com.zzpig.train.business.enums.ConfirmOrderStatusEnum;
 import com.zzpig.train.business.enums.RedisKeyPreEnum;
 import com.zzpig.train.business.enums.RocketMQTopicEnum;
@@ -44,10 +45,13 @@ public class BeforeConfirmOrderService {
     private RedissonClient redissonClient;
 
     @Resource
-    public RocketMQTemplate rocketMQTemplate;
+    private ConfirmOrderService confirmOrderService;
+
+//    @Resource
+//    public RocketMQTemplate rocketMQTemplate;
 
     @SentinelResource(value = "beforeDoConfirm", blockHandler = "beforeDoConfirmBlock")
-    public void beforeDoConfirm(ConfirmOrderDoReq req) {
+    public Long beforeDoConfirm(ConfirmOrderDoReq req) {
         req.setMemberId(LoginMemberContext.getId());
         // 校验令牌余量
         boolean validSkToken = skTokenService.validSkToken(req.getDate(), req.getTrainCode(), LoginMemberContext.getId());
@@ -81,11 +85,15 @@ public class BeforeConfirmOrderService {
         confirmOrderMapper.insert(confirmOrder);
 
         // 发送MQ排队购票
-        String reqJson = JSON.toJSONString(req);
-        LOG.info("排队购票，发送mq开始，消息：{}", reqJson);
-        rocketMQTemplate.convertAndSend(RocketMQTopicEnum.CONFIRM_ORDER.getCode(), reqJson);
-        LOG.info("排队购票，发送mq结束");
-
+        ConfirmOrderMQDto confirmOrderMQDto = new ConfirmOrderMQDto();
+        confirmOrderMQDto.setDate(req.getDate());
+        confirmOrderMQDto.setTrainCode(req.getTrainCode());
+        String reqJson = JSON.toJSONString(confirmOrderMQDto);
+//        LOG.info("排队购票，发送mq开始，消息：{}", reqJson);
+//        rocketMQTemplate.convertAndSend(RocketMQTopicEnum.CONFIRM_ORDER.getCode(), reqJson);
+//        LOG.info("排队购票，发送mq结束");
+        confirmOrderService.doConfirm(confirmOrderMQDto);
+        return confirmOrder.getId();
     }
 
     /**

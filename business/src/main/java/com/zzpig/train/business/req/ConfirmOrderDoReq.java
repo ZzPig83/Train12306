@@ -3,6 +3,7 @@ package com.zzpig.train.business.req;
 import java.util.Date;
 import java.util.List;
 
+import com.alibaba.fastjson.JSONArray;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.validation.constraints.NotBlank;
@@ -133,8 +134,9 @@ public class ConfirmOrderDoReq {
         return tickets;
     }
 
-    public void setTickets(List<ConfirmOrderTicketReq> tickets) {
-        this.tickets = tickets;
+    public void setTickets(JSONArray tickets) {
+        List<ConfirmOrderTicketReq> ticketList = tickets.toJavaList(ConfirmOrderTicketReq.class);
+        this.tickets = ticketList;
     }
 
     @Override
